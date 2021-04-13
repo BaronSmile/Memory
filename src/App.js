@@ -1,23 +1,37 @@
-import logo from './logo.svg';
+import React from 'react';
+import {Container} from "@material-ui/core";
+import {useDispatch, useSelector} from "react-redux";
+
 import './App.css';
+import Navbar from "./Components/Navbar";
+import EndGame from "./Components/EndGame";
+import Game from "./Components/Game";
+import {scoreUp, showEndGame} from "./redux/action";
 
 function App() {
+  const isEndGame = useSelector(({game}) => game.showEndGame);
+  const score = useSelector(({game}) => game.score);
+  const dispatch = useDispatch();
+
+  console.log(isEndGame, score)
+
+  const handleEndGame = (boolean) => {
+    if (boolean) {
+      dispatch(scoreUp());
+    } else if(score){
+      dispatch(showEndGame(false));
+    }else {
+      dispatch(showEndGame(true));
+    }
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Navbar score={score}/>
+      <Container maxWidth="sm">
+        <Game endGame={handleEndGame}/>
+        {isEndGame ? <EndGame newGame={handleEndGame}/> : null}
+      </Container>
     </div>
   );
 }
