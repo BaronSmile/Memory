@@ -13,8 +13,6 @@ function App() {
   const score = useSelector(({game}) => game.score);
   const dispatch = useDispatch();
 
-  console.log(isEndGame, score)
-
   const handleEndGame = (boolean) => {
     if (boolean) {
       dispatch(scoreUp());
